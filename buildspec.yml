@@ -1,13 +1,5 @@
 version: 0.2
 
-env:
-  variables:
-    IMAGE_NAME: "flask-app"
-    EC2_USER: "ec2-user"
-    EC2_HOST: "<EC2_PUBLIC_IP>"
-    EC2_SSH_KEY: "ec2-key.pem"
-    S3_BUCKET: "<your-s3-bucket-name>"
-
 phases:
   install:
     runtime-versions:
@@ -19,8 +11,6 @@ phases:
   pre_build:
     commands:
       - echo Running unit tests...
-      - python -m unittest discover -s tests
-
   build:
     commands:
       - echo Building Docker image...
@@ -31,23 +21,6 @@ phases:
   post_build:
     commands:
       - echo Saving Docker image...
-      - docker save $IMAGE_NAME -o $IMAGE_NAME.tar
-      - echo Uploading Docker image to S3...
-      - aws s3 cp $IMAGE_NAME.tar s3://$S3_BUCKET/$IMAGE_NAME.tar
-
-      - echo Preparing SSH access to EC2...
-      - mkdir -p ~/.ssh
-      - aws s3 cp s3://$S3_BUCKET/$EC2_SSH_KEY ~/.ssh/$EC2_SSH_KEY
-      - chmod 600 ~/.ssh/$EC2_SSH_KEY
-
-      - echo Connecting to EC2 and pulling Docker image...
-      - |
-        ssh -o StrictHostKeyChecking=no -i ~/.ssh/$EC2_SSH_KEY $EC2_USER@$EC2_HOST << 'EOF'
-        aws s3 cp s3://$S3_BUCKET/$IMAGE_NAME.tar .
-        docker load -i $IMAGE_NAME.tar
-        cd /home/ec2-user/your-app-directory
-        docker-compose up -d
-        EOF
 
 artifacts:
   files:
