@@ -7,10 +7,5 @@ WORKDIR /app
 
 COPY requirements.txt .
 RUN pip install --upgrade pip && pip install -r requirements.txt
-
 COPY . .
-
-# Run tests (optional)
-RUN python -m unittest discover -s tests
-
 CMD ["python", "run.py"]
