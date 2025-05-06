@@ -11,12 +11,13 @@ phases:
   pre_build:
     commands:
       - echo Running unit tests...
+
   build:
     commands:
       - echo Building Docker image...
       - nohup dockerd > /tmp/dockerd.log 2>&1 &
       - timeout 15 sh -c "until docker info; do echo .; sleep 1; done"
-      - docker build -t $IMAGE_NAME .
+      - docker build -t my_first_app .
 
   post_build:
     commands:
