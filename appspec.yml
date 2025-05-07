@@ -1,0 +1,16 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ec2-user/app
+
+hooks:
+  AfterInstall:
+    - location: scripts/stop_containers.sh
+      timeout: 60
+      runas: ec2-user
+
+  ApplicationStart:
+    - location: scripts/start_containers.sh
+      timeout: 60
+      runas: ec2-user
