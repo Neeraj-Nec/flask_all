@@ -1,7 +1,9 @@
 version: '3.8'
 services:
   flask-app:
-    build: .
+    build:
+      context: .
+    image: flask-app-image  # Optional: for naming the built image
     container_name: flask_app_container
     ports:
       - "${FLASK_PORT}:5000"
@@ -9,4 +11,4 @@ services:
       - .:/app
     environment:
       - FLASK_ENV=${FLASK_ENV}
-    command: python run.py
+    command: python app.py
