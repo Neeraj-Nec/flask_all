@@ -15,8 +15,6 @@ phases:
   build:
     commands:
       - echo Building Docker image...
-      - nohup dockerd > /tmp/dockerd.log 2>&1 &
-      - timeout 15 sh -c "until docker info; do echo .; sleep 1; done"
       - docker build -t my_first_app .
 
   post_build:
