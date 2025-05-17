@@ -5,17 +5,16 @@ files:
     destination: /home/ec2-user/app
 
 hooks:
-  AfterInstall:
-    - location: scripts/download_and_load_image.sh
-      timeout: 300
-      runas: ec2-user
+  # AfterInstall:
+  #   - location: scripts/download_and_load_image.sh
+  #     timeout: 300
+  #     runas: ec2-user
 
   ApplicationStart:
-    - location: scripts/start_containers.sh
-      timeout: 60
-      runas: ec2-user
+    - location: start.sh
+      runas: root
 
-  BeforeInstall:
-    - location: scripts/stop_containers.sh
-      timeout: 60
-      runas: ec2-user
+  # BeforeInstall:
+  #   - location: scripts/stop_containers.sh
+  #     timeout: 60
+  #     runas: ec2-user
